@@ -8,44 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-
 import static com.shield.lexer.Tokenizer.TokenType.*;
-
-/**
- * Recursive-descent parser for the subset represented by SHIELD's Tokenizer.
- * This file supplies its own AST nodes (implementing the existing ASTNodes marker)
- * and ParseException, so no existing source files need to change.
- *
- * <p>Usage: {@code var program = ShieldParser.parse("int x = 1 + 2 * 3;");}
- * Or: {@code new ShieldParser(new Tokenizer().tokenize(source)).parse()}.
- * Requires Java 17 or newer; no external libraries.
- *
- * <p>Programs may contain classes, declarations, and statements. Class members
- * are fields or methods with typed parameters and block bodies; extends is
- * optional. Types are int, boolean, named classes, or one-dimensional arrays;
- * void is allowed only as a method return type. Statements include blocks,
- * assignment/call/object-creation statements, if/else, while, return, print with
- * exactly one expression, and empty statements. Local declarations require a
- * block when used inside if/while bodies. Expressions include literals, names,
- * grouping, unary !/-/+, binary operators, assignment, member access, indexing,
- * calls, object creation, and array creation with an explicit size.
- *
- * <p>Precedence from lowest to highest: assignment (right associative), ||, &&,
- * ==/!=, &lt;/&gt;, +/-, * /, unary, then member access/indexing/calls.
- * Other binary operators associate left; else binds to the nearest if.
- *
- * <p>This is not a full Java parser: modifiers (public/static/etc.), constructors,
- * strings, packages/imports, for loops, casts, generics, multidimensional arrays,
- * and operators absent from Tokenizer are unsupported. Comment and identifier
- * support is inherited unchanged from Tokenizer, including its existing print
- * keyword behavior. The special PrintStmt uses contiguous System.out.println;
- * spaced spellings are parsed as ordinary member calls.
- *
- * <p>Parsing fails at the first syntax error with a token and line number. Lexical
- * errors retain Tokenizer's exception. Undefined names, duplicate declarations,
- * operand types, integer ranges, return context, and inheritance rules are left
- * to semantic analysis. Instances are reusable but not thread safe.
- */
 public final class ShieldParser {
     private final List<Token> tokens;
     private int current;
